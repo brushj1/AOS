@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Lab 04 Starter Template</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+            text-align: center;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #001323;
+            text-align: center;
+        }
+        h2 {
+            display: inline-block;
+            color: #001323;
+            text-align: center;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #001323;
+        }
+        button {
+            font-size: 1.2em;
+            margin-left: 10%;
+        }
+        /* Additional style rules go here! */
+        
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Lab #4 </h1>
+        <h2>Jared Brush</h2>
+    </header>
+
+    <div id='map'></div>
+    <button id='map-cities'>Map Cities</button>
+    <footer>
+        <p>Map authored by Jared Brush</p>
+        <p>"Normal is an illusion. What is normal for the spider is chaos for the fly."</p>
+        <p>2/10/18
+        </p>
+    </footer>
+
+<script>
+    
+    // map options
+    var options = {
+        center: [37, -109],
+        zoom: 4
+    }
+    
+    // creates the Leaflet map
+    var map = L.map('map', options);
+    
+    // requests some map tiles
+    var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    });
+    
+    // adds these tiles to the map
+    map.addLayer(tiles);
+    
+    //task 1
+var cities = ["Salt Lake City", "Las Vegas", "Albuquerque"]
+    
+var cityCoords = [[40.76, -111.89], [36.17, -115.14], [35.08, -106.65]]
+    
+var cityPops = [200544, 641676, 558545]
+    
+var cityAreas = [110.4, 135.9, 189.5] //in sq miles
+        
+    var button = document.getElementById("map-cities");
+    
+      button.addEventListener("click", function() {
+        
+        do {
+            var units = prompt('Enter the units for calculating density', 'Enter "miles" or "km"');
+        } while (units != "miles" && units != "km");
+        
+        // A 'do-while' loop is a control flow statement. The code is executed a minimum of one time. It is then repeatedly executed until the 'while' condition is met to satisfaction. In this case, the 'prompt' won't go away unless the user enters miles OR km.
+        
+        // Task #2 Below
+        mapCities(units);
+        
+    }); // addEventListener callback function ends here
+    
+    
+    // task 4 write a function signature here named mapCities so that it accepts var units as a parameter
+    function mapCities (units){
+        for(var i= 0; i < cities.length; i++) {
+            var density = calcPopDensity(cityPops[i],cityAreas[i],units);
+            console.log();
+        
+     var popup = "<b>" + cities[i] + "</b><br>" +
+               "<b>Density</b>: "+density.toLocaleString()+" people per sq " + units;
+            L.marker(cityCoords[i])
+               .addTo(map)
+               .bindPopup(popup)       
+            
+            
+        
+        }
+            
+        }
+        
+function calcPopDensity(pop, area, units) {
+    if (units == "miles") {
+            var density = pop/area;
+    }
+    
+    else if (units == "km"){
+        var density = pop/(area*2.589);
+    }
+    
+    else {
+        console.log("Enter the right units!")
+    }
+    console.log("The population density is " + density +" people per sq "+units);    
+    return density;
+    
+}
+
+    
+    //Assign the function call above a variable named density
+    
+    
+    
+    //Enter the code below to accomplish task #7
+    
+    
+    
+</script>
+    
+</body>
+
+</html>
